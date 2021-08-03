@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { db } from "../../utils/firebase";
+import { db, siteRef, employeeRef } from "../../utils/firebase";
 import { firebaseLooper } from "../../utils/tools";
 
 const Cars = () => {
@@ -22,6 +22,16 @@ const Cars = () => {
       .catch((e) => {
         console.log(e);
       });
+
+    siteRef.get().then((querySnapshot) => {
+      console.log(querySnapshot.data());
+      //   console.log(snapshot); the same
+    });
+    employeeRef.get().then((querySnapshot) => {
+      const employee = firebaseLooper(querySnapshot);
+      console.log(employee);
+      //   console.log(snapshot); the same
+    });
   }, []);
 
   const handleCarData = (cars) => {

@@ -18,6 +18,18 @@ firebase.initializeApp(firebaseConfig);
 //instant of our firestore
 export const db = firebase.firestore();
 
+// exporting references - normal
+export const carCollection = db.collection("cars");
+
+// reference to specific document
+export const siteRef = db.doc("site/business");
+
+//reference to nested collection
+export const employeeRef = db
+  .collection("site")
+  .doc("employees")
+  .collection("admins");
+
 //accessing collection
 // snapshot - in world of firebase it is something what we are bringing from DB from FB
 db.collection("cars")
@@ -28,7 +40,7 @@ db.collection("cars")
     snapshot.forEach((doc) => {
       // we are getting documents but still with all additional data
       console.log(doc);
-      // without ID 
+      // without ID
       console.log(doc.data());
     });
   })
