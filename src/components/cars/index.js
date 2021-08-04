@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { db, siteRef, employeeRef } from "../../utils/firebase";
 import { firebaseLooper } from "../../utils/tools";
+import Form from "./forms";
 
 const Cars = () => {
   const [cars, setCars] = useState([]);
 
   useEffect(() => {
     db.collection("cars")
+      .orderBy("createdAt", "asc")
       .get()
       .then((snapshot) => {
         const cars = firebaseLooper(snapshot);
@@ -22,6 +24,13 @@ const Cars = () => {
       .catch((e) => {
         console.log(e);
       });
+    //get doc by id
+    db.collection("cars")
+      .doc("0SWgXHhXk2rUbR1IwEUO")
+      .get()
+      .then((snapshot) => {
+        console.log(snapshot.data());
+      });
 
     siteRef.get().then((querySnapshot) => {
       console.log(querySnapshot.data());
@@ -33,6 +42,42 @@ const Cars = () => {
       //   console.log(snapshot); the same
     });
   }, []);
+
+  const getAllCars = () => {
+    db.collection("cars")
+      // where // operator // and equal to what
+      .where("color", "!=", "red")
+      .get()
+      .then((snapshot) => {
+        // console.log(snapshot.data()); //wrong
+        const cars = firebaseLooper(snapshot);
+        cars.forEach((item) => console.log(item)); // printing each item
+        console.log(firebaseLooper(snapshot)); // printing array
+      });
+
+    db.collection("cars")
+      // where // operator // and equal to what
+      .where("price", ">=", 1000)
+      .where("price", "<=", 5000)
+      .get()
+      .then((snapshot) => {
+        // console.log(snapshot.data()); //wrong
+        const cars = firebaseLooper(snapshot);
+        cars.forEach((item) => console.log(item)); // printing each item
+        console.log(firebaseLooper(snapshot)); // printing array
+      });
+
+    db.collection("cars")
+      // by what and asc or desc
+      .orderBy("price", "desc") //asc
+      .get()
+      .then((snapshot) => {
+        // console.log(snapshot.data()); //wrong
+        const cars = firebaseLooper(snapshot);
+        cars.forEach((item) => console.log(item)); // printing each item
+        console.log(firebaseLooper(snapshot)); // printing array
+      });
+  };
 
   const handleCarData = (cars) => {
     return cars
@@ -49,6 +94,7 @@ const Cars = () => {
 
   return (
     <>
+      <Form />
       <table className="table table-dark">
         <thead>
           <tr>
@@ -60,6 +106,7 @@ const Cars = () => {
         </thead>
         <tbody>{handleCarData(cars)}</tbody>
       </table>
+      <button onClick={getAllCars}>Fetch Cars</button>
     </>
   );
 };

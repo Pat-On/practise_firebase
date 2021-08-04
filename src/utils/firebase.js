@@ -18,6 +18,8 @@ firebase.initializeApp(firebaseConfig);
 //instant of our firestore
 export const db = firebase.firestore();
 
+export const firebaseTimestamp = firebase.firestore.FieldValue.serverTimestamp;
+
 // exporting references - normal
 export const carCollection = db.collection("cars");
 
