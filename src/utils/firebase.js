@@ -2,6 +2,9 @@ import firebase from "firebase/app";
 // to get access to additional features of firebase you need to import them
 import "firebase/firestore";
 
+// like previous services we need to import them
+import "firebase/firebase-auth";
+
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FB_API_KEY,
   authDomain: process.env.REACT_APP_AUTH_DOMAIN,
@@ -14,6 +17,9 @@ const firebaseConfig = {
 
 //initialization of the app
 firebase.initializeApp(firebaseConfig);
+
+// initialization of the authentication
+firebase.auth();
 
 //instant of our firestore
 export const db = firebase.firestore();
