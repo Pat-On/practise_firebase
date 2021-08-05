@@ -11,7 +11,7 @@ class Form extends Component {
 
   componentDidMount() {
     db.collection("cars")
-      .doc("D1QlzViYIJyBndQxd4UD")
+      .doc("pKdehJ7tqPK4AlDv61F1")
       .update({
         // "dealers.sandiego": true,        .arrayRemove('Awesome)
         tags: firebase.firestore.FieldValue.arrayUnion("Awesome"), // You can not send the same element twice - unique values
@@ -31,7 +31,7 @@ class Form extends Component {
       })
       .then((data) => {
         // we are going to get undefined in that case - what is fine in that case
-        console.log(data);
+        // console.log(data);
       })
       .catch((e) => {
         console.log(e);
@@ -88,8 +88,9 @@ class Form extends Component {
 
     //
     db.collection("cars")
-      .doc()
-      .set({
+      .doc("pKdehJ7tqPK4AlDv61F1")
+      // .set({
+      .update({
         ...this.state,
         available: this.state.available === "true" ? true : false,
         price: parseInt(this.state.price),
@@ -171,5 +172,28 @@ class Form extends Component {
     );
   }
 }
+
+// db.collection("cars")
+//   .doc("pKdehJ7tqPK4AlDv61F1")
+//   .onSnapshot((doc) => {
+//     console.log("Current data", doc.data());
+//   });
+
+// if you are going to subscribe to something you need to unsubscribe because it would always run
+const carsSubscriprion = db.collection("cars").onSnapshot((querySnapshot) => {
+  querySnapshot.docChanges().forEach((change) => {
+    if (change.type === "added") {
+      console.log("added:", change.doc.data());
+    }
+    if (change.type === "modified") {
+      console.log("modified:", change.doc.data());
+    }
+    if (change.type === "removed") {
+      console.log("removed:", change.doc.data());
+    }
+  });
+});
+
+//  You have to do : carsSubscription() to do cancel of subscription
 
 export default Form;

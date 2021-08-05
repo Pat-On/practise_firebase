@@ -8,11 +8,17 @@ const Cars = () => {
 
   useEffect(() => {
     db.collection("cars")
-      .orderBy("createdAt", "asc")
+      .orderBy("price", "asc")
+      .startAt(400)
+      .endAt(300000)
+      // .startAfter(400) //401
+      // .endBefore(1000) //999
+      // .limit(2) // limiter
+      // .limitToLast(2) // limit 2 but from the end
       .get()
       .then((snapshot) => {
         const cars = firebaseLooper(snapshot);
-        console.log(cars);
+        // console.log(cars);
         setCars((prevState) => {
           return cars;
         });
@@ -22,25 +28,38 @@ const Cars = () => {
         // });
       })
       .catch((e) => {
-        console.log(e);
+        // console.log(e);
       });
     //get doc by id
     db.collection("cars")
       .doc("0SWgXHhXk2rUbR1IwEUO")
+      // .doc()
+      // .limit(2)
       .get()
       .then((snapshot) => {
-        console.log(snapshot.data());
+        // console.log(snapshot.data());
       });
 
     siteRef.get().then((querySnapshot) => {
-      console.log(querySnapshot.data());
+      // console.log(querySnapshot.data());
       //   console.log(snapshot); the same
     });
     employeeRef.get().then((querySnapshot) => {
       const employee = firebaseLooper(querySnapshot);
-      console.log(employee);
+      // console.log(employee);
       //   console.log(snapshot); the same
     });
+
+    // to check if something exist or no
+    db.collection("cars")
+      .doc("sss")
+      .get()
+      .then((snapshot) => {
+        // console.log(snapshot.exists); // byt this you can get info if it exist or no => nice
+      })
+      .catch((e) => {
+        // console.log(e);
+      });
   }, []);
 
   const getAllCars = () => {
@@ -52,7 +71,7 @@ const Cars = () => {
         // console.log(snapshot.data()); //wrong
         const cars = firebaseLooper(snapshot);
         cars.forEach((item) => console.log(item)); // printing each item
-        console.log(firebaseLooper(snapshot)); // printing array
+        // console.log(firebaseLooper(snapshot)); // printing array
       });
 
     db.collection("cars")
@@ -64,7 +83,7 @@ const Cars = () => {
         // console.log(snapshot.data()); //wrong
         const cars = firebaseLooper(snapshot);
         cars.forEach((item) => console.log(item)); // printing each item
-        console.log(firebaseLooper(snapshot)); // printing array
+        // console.log(firebaseLooper(snapshot)); // printing array
       });
 
     db.collection("cars")
@@ -75,7 +94,7 @@ const Cars = () => {
         // console.log(snapshot.data()); //wrong
         const cars = firebaseLooper(snapshot);
         cars.forEach((item) => console.log(item)); // printing each item
-        console.log(firebaseLooper(snapshot)); // printing array
+        // console.log(firebaseLooper(snapshot)); // printing array
       });
   };
 

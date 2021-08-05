@@ -37,17 +37,17 @@ export const employeeRef = db
 db.collection("cars")
   .get()
   .then((snapshot) => {
-    console.log(snapshot);
+    // console.log(snapshot);
     // it is not regular forEach - it is coming from FB
     snapshot.forEach((doc) => {
       // we are getting documents but still with all additional data
-      console.log(doc);
+      // console.log(doc);
       // without ID
-      console.log(doc.data());
+      // console.log(doc.data());
     });
   })
   .catch((e) => {
-    console.log(e);
+    // console.log(e);
   });
 
 export default firebase;
