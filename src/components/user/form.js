@@ -5,8 +5,8 @@ class LoginForm extends Component {
   state = {
     register: false,
     user: {
-      email: "",
-      password: "",
+      email: "steve@gmail.com",
+      password: "12345678",
     },
   };
 
@@ -35,6 +35,75 @@ class LoginForm extends Component {
         .catch((e) => {
           console.log(e);
         });
+    }
+  };
+
+  // getting  information about the user
+  handleGetUser = () => {
+    let getUser = firebase.auth().currentUser;
+    if (getUser) {
+      // big weird object of user -> plenty of properties and methods
+      // we can modify the user by the methods provided on user object
+      // console.log(getUser);
+      getUser.getIdToken().then((res) => {
+        console.log(res);
+      });
+      getUser.getIdTokenResult().then((res) => {
+        console.log(res);
+      });
+    } else {
+      console.log(" no user");
+    }
+  };
+
+  // very simple way of login out
+  handleLogout = () => {
+    firebase
+      .auth()
+      .signOut()
+      .then(() => {
+        console.log("user logged out");
+      });
+  };
+
+  handleUpdateProfile = () => {
+    // to proceed any actions You need access to the user objects where You have these methods.
+    let getUser = firebase.auth().currentUser;
+    console.log("I got here");
+    // we can add basic things to user object like displayed name and the link url to photo
+    // this information are stored in bahind scene so You are not going to see them inside the admin panel in firebase inside user list
+    getUser
+      .updateProfile({
+        displayName: "Steve",
+        photoURL: "https://somethingsomwhere.com/photo.jpeq",
+      })
+      .then(() => {
+        console.log(getUser);
+        console.log("I got here");
+      });
+  };
+
+  handleUpdateEmail = () => {
+    let getUser = firebase.auth().currentUser;
+    // another way it will refresh everything and authorize us
+    // it is not going to take place inside user but in auth - it is update for email
+    let credential = firebase.auth.EmailAuthProvider.credential(
+      // You can use it inside the popup where You would get this information - here just demo
+      "newemail@gmail.com",
+      "12345678"
+    );
+    if (getUser) {
+      //                email
+      // interesting it is not going to allow you to change email if you are not freshly logged in
+      // undefined it is mean that update was successfully
+      // getUser.updateEmail("newemail@gmail.com").then((res) => {
+      //   console.log(res);
+      // });
+
+      // method inside the user so there is user object and authentication object
+      getUser.reauthenticateWithCredential(credential).then((res) => {
+        getUser.updateEmail("steve@gmail.com");
+      });
     }
   };
 
@@ -77,6 +146,19 @@ class LoginForm extends Component {
             {this.state.register ? "Register" : "Sign in"}
           </button>
         </form>
+        <hr />
+        <button onClick={() => this.handleLogout()}>Log out</button>
+        <hr />
+        <button onClick={() => this.handleGetUser()}>Ask about the user</button>
+        <hr />
+        <button onClick={() => this.handleUpdateEmail()}>
+          Update user email
+        </button>
+        <hr />
+        <button onClick={() => this.handleUpdateProfile()}>
+          Update user profile
+        </button>
+        <hr />
       </>
     );
   }

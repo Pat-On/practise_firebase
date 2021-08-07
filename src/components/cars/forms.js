@@ -180,19 +180,19 @@ class Form extends Component {
 //   });
 
 // if you are going to subscribe to something you need to unsubscribe because it would always run
-const carsSubscriprion = db.collection("cars").onSnapshot((querySnapshot) => {
-  querySnapshot.docChanges().forEach((change) => {
-    if (change.type === "added") {
-      console.log("added:", change.doc.data());
-    }
-    if (change.type === "modified") {
-      console.log("modified:", change.doc.data());
-    }
-    if (change.type === "removed") {
-      console.log("removed:", change.doc.data());
-    }
-  });
-});
+// const carsSubscriprion = db.collection("cars").onSnapshot((querySnapshot) => {
+//   querySnapshot.docChanges().forEach((change) => {
+//     if (change.type === "added") {
+//       console.log("added:", change.doc.data());
+//     }
+//     if (change.type === "modified") {
+//       console.log("modified:", change.doc.data());
+//     }
+//     if (change.type === "removed") {
+//       console.log("removed:", change.doc.data());
+//     }
+//   });
+// });
 
 //  You have to do : carsSubscription() to do cancel of subscription
 
