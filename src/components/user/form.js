@@ -3,7 +3,7 @@ import firebase from "../../utils/firebase";
 
 class LoginForm extends Component {
   state = {
-    register: false,
+    register: false, //true
     user: {
       email: "steve@gmail.com",
       password: "12345678",
@@ -21,6 +21,12 @@ class LoginForm extends Component {
         .createUserWithEmailAndPassword(email, password)
         .then((response) => {
           console.log(response);
+
+          // firebase.auth().currentUser.sendEmailVerification() -> if you do not have user object you have to fetch it again from db
+
+          response.user.sendEmailVerification().then(() => {
+            console.log("mail sent");
+          });
         })
         .catch((e) => {
           console.log(e);
@@ -107,6 +113,21 @@ class LoginForm extends Component {
     }
   };
 
+  handleGoogleSignin = () => {
+    // /creating the EmailAuthProvider
+    const provider = new firebase.auth.GoogleAuthProvider(); // is it going to create instance of it
+    firebase
+      .auth()
+      // we are going to provide pop up of it
+      .signInWithPopup(provider)
+      .then((result) => {
+        console.log(result);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
   changeHandler = (e) => {
     let name = e.target.name;
     let value = e.target.value;
@@ -159,6 +180,9 @@ class LoginForm extends Component {
           Update user profile
         </button>
         <hr />
+        <button onClick={() => this.handleGoogleSignin()}>
+          Google sign in
+        </button>
       </>
     );
   }

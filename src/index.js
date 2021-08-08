@@ -23,6 +23,7 @@ firebase.auth().onAuthStateChanged((user) => {
     // console.log(user);
     console.log(user.email);
     console.log(user.uid);
+    console.log(user.emailVerified);
   } else {
     console.log("no user");
   }
