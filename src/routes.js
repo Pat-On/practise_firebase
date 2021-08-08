@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 // components
 import Home from "./components/index";
 import Header from "./components/header";
-import Footer from "./components/footer";
+// import Footer from "./components/footer";
 import Cars from "./components/cars";
 import Login from "./components/user/login";
 import Upload from "./components/upload/index";
