@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 
 // components
 import Home from "./components/index";
@@ -18,6 +18,7 @@ const Routes = () => (
         <Route exact path="/cars" component={Cars} />
         <Route exact path="/login" component={Login} />
         <Route exact path="/upload" component={Upload} />
+        <Redirect to="/" />
       </Switch>
     </main>
   </BrowserRouter>
