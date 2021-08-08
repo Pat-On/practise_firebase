@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import firebase, { usersCollection } from "../../utils/firebase";
 
-class LoginForm extends Component {
+class FormLogIn extends Component {
   state = {
-    // register: false,
-    register: true,
+    register: false,
+    // register: true,
     user: {
       email: "steve@gmail.com",
       password: "12345678",
@@ -54,9 +54,9 @@ class LoginForm extends Component {
       // big weird object of user -> plenty of properties and methods
       // we can modify the user by the methods provided on user object
       // console.log(getUser);
-      // getUser.getIdToken().then((res) => {
-      // console.log(res);
-      // });
+      getUser.getIdToken().then((res) => {
+        console.log(res);
+      });
       getUser.getIdTokenResult().then((res) => {
         console.log(res);
       });
@@ -210,4 +210,4 @@ class LoginForm extends Component {
   }
 }
 
-export default LoginForm;
+export default FormLogIn;

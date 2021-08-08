@@ -1,5 +1,11 @@
 import React, { Component } from "react";
-import firebase, { storageRef, usersRef } from "../../utils/firebase";
+import firebase, {
+  storageRef,
+  usersCollection,
+  usersRef,
+} from "../../utils/firebase";
+
+import ListUploads from "./list";
 
 class Upload extends Component {
   constructor(props) {
@@ -18,10 +24,22 @@ class Upload extends Component {
 
   componentDidMount() {
     // we can bring the pictures by putting their name - the name is the ID,
-    const imageRef = usersRef.child("to_upload.jpg");
-    imageRef.getDownloadURL().then((url) => {
-      console.log("That is from component did mount", url);
-    });
+    const imageRef = usersRef.child("to_upload2.jpg");
+    imageRef
+      .getDownloadURL()
+      .then((url) => {
+        console.log("That is from component did mount", url);
+      })
+      .catch((e) => {
+        // entire list about errors is in documentation -> Handle errors
+        console.log(e);
+      });
+    imageRef
+      .getMetadata()
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((e) => console.log(e));
   }
 
   handleUpload = (e) => {
@@ -30,7 +48,12 @@ class Upload extends Component {
     console.log(this.state);
     //there should be added validation of course
     const { image } = this.state;
-    const uploadTask = usersRef.child(`${image.name}`).put(image);
+    const metadata = {
+      customMetadata: {
+        hello: "it is me. You can add here what ever You want",
+      },
+    };
+    const uploadTask = usersRef.child(`${image.name}`).put(image, metadata);
 
     // so we are going to have here access to three callback
     uploadTask.on(
@@ -77,6 +100,15 @@ class Upload extends Component {
         console.log("upload done");
         console.log(test); // undefined -> so it provide "big" zero
         console.log(uploadTask.snapshot.ref);
+
+        // simulation how to add profile picture to the user profile
+        let getUser = firebase.auth().currentUser;
+        // via the reference to the users
+        usersCollection.doc(getUser.uid).update({
+          // we can do in this way because we can find the picture by the rreq to storage
+          image: uploadTask.snapshot.ref.name,
+        });
+
         //access to the download URL
         uploadTask.snapshot.ref.getDownloadURL().then((url) => {
           console.log(url);
@@ -172,6 +204,9 @@ class Upload extends Component {
             CANCEL
           </button>
         </div>
+
+        <hr />
+        <ListUploads />
       </>
     );
   }
