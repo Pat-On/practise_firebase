@@ -5,6 +5,9 @@ import "firebase/firestore";
 // like previous services we need to import them
 import "firebase/firebase-auth";
 
+//the same
+import "firebase/storage";
+
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FB_API_KEY,
   authDomain: process.env.REACT_APP_AUTH_DOMAIN,
@@ -20,6 +23,13 @@ firebase.initializeApp(firebaseConfig);
 
 // initialization of the authentication
 firebase.auth();
+//storage
+
+export const storage = firebase.storage();
+//ref to storage
+export const storageRef = storage.ref();
+//reference to the storage
+export const usersRef = storageRef.child("/images/users/"); // <=
 
 //instant of our firestore
 export const db = firebase.firestore();
