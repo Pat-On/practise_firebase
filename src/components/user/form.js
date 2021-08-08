@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import firebase from "../../utils/firebase";
+import firebase, { usersCollection } from "../../utils/firebase";
 
 class LoginForm extends Component {
   state = {
-    register: false, //true
+    // register: false,
+    register: true,
     user: {
       email: "steve@gmail.com",
       password: "12345678",
@@ -19,12 +20,14 @@ class LoginForm extends Component {
       firebase
         .auth()
         .createUserWithEmailAndPassword(email, password)
-        .then((response) => {
-          console.log(response);
+        .then((user) => {
+          this.handleStoreRegisterUser(user);
+
+          console.log(user);
 
           // firebase.auth().currentUser.sendEmailVerification() -> if you do not have user object you have to fetch it again from db
 
-          response.user.sendEmailVerification().then(() => {
+          user.user.sendEmailVerification().then(() => {
             console.log("mail sent");
           });
         })
@@ -60,6 +63,23 @@ class LoginForm extends Component {
     } else {
       console.log(" no user");
     }
+  };
+
+  handleStoreRegisterUser = (data) => {
+    // data in that case are going to be information about the user and the account what he created
+    // so there is no special method to do it, we have to just create pipe to connect the user authentication or additional information
+    // to save them in db
+    usersCollection
+      .doc(data.user.uid)
+      .set({
+        email: data.user.email,
+      })
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   };
 
   // very simple way of login out
@@ -121,6 +141,8 @@ class LoginForm extends Component {
       // we are going to provide pop up of it
       .signInWithPopup(provider)
       .then((result) => {
+        // store on FIRESTORE
+        this.handleStoreRegisterUser(result);
         console.log(result);
       })
       .catch((e) => {

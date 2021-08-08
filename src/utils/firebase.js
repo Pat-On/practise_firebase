@@ -29,6 +29,9 @@ export const firebaseTimestamp = firebase.firestore.FieldValue.serverTimestamp;
 // exporting references - normal
 export const carCollection = db.collection("cars");
 
+// users collection used to store data about the users
+export const usersCollection = db.collection("users");
+
 // reference to specific document
 export const siteRef = db.doc("site/business");
 
