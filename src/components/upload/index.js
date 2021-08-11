@@ -3,6 +3,7 @@ import firebase, {
   storageRef,
   usersCollection,
   usersRef,
+  storage,
 } from "../../utils/firebase";
 
 import ListUploads from "./list";
@@ -53,7 +54,12 @@ class Upload extends Component {
         hello: "it is me. You can add here what ever You want",
       },
     };
-    const uploadTask = usersRef.child(`${image.name}`).put(image, metadata);
+
+    // in real world there would be validation
+    const user = firebase.auth().currentUser;
+    const uploadTask = storage
+      .ref(`users/${user.uid}/${image.name}`)
+      .put(image, metadata);
 
     // so we are going to have here access to three callback
     uploadTask.on(
