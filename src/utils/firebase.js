@@ -8,6 +8,9 @@ import "firebase/firebase-auth";
 //the same
 import "firebase/storage";
 
+// functions
+import "firebase/firebase-functions";
+
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FB_API_KEY,
   authDomain: process.env.REACT_APP_AUTH_DOMAIN,
@@ -24,6 +27,7 @@ firebase.initializeApp(firebaseConfig);
 // initialization of the authentication
 firebase.auth();
 //storage
+export const functions = firebase.functions();
 
 export const storage = firebase.storage();
 //ref to storage

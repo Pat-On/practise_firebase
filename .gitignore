@@ -6,6 +6,9 @@
 .pnp.js
 firebase-debug.log
 .firebase/
+ui-debug.log
+
+firebaseSecret.json
 
 # testing
 /coverage
